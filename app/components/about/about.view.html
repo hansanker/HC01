@@ -1,0 +1,69 @@
+
+<div class="container" align="left">
+
+            <h2>TPP vragenlijst</h2>
+            <table>
+                <tr><td >Klantnaam  :</td><td>{{Company}}</td></tr>
+                <tr><td>Email contactpersoon :</td><td>{{emails}}</td></tr>
+                <tr><td>Vragenlijst open tot :</td><td>{{closeDate}}</td></tr>
+             </table>
+	
+</div>
+<div class="row clearfix">
+	<div ng-show="!showQuestions" class="jumbotron row">
+		<div class="col-md-offset-3 col-md-6">
+			<form class="text-center" role="search">
+				<div class="form-group">
+					<input ng-enter="checkUserEmail()" ng-model="userEmail" type="text" class="form-control" style="width: 350px;" placeholder="Type uw emailadres en geef ENTER"/>
+				</div>
+				<div class="form-group">
+					<button ng-if="loadingUserInfo" class="btn btn-lg btn-warning"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Laden...</button>
+				</div>						
+				<div ng-show="false" class="form-group">
+					<input ng-model="userName" type="text" class="form-control" placeholder="Place name & press Enter"/>
+				</div> 
+				<div ng-show="false" class="form-group">
+					<input ng-model="userCompany" type="text" class="form-control" placeholder="Place company & press Enter"/>
+				</div> 
+				<div ng-show="doSurvey" class="form-group">
+					<button ng-click="processSurvey()" class="btn btn-default">{{userStatus}}</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<div ng-show="showQuestions">		
+		<ul ng-repeat="qs in questions">
+			<li>
+                <div class="row" id="questionTitle">
+                    <div class="ten columns">
+                        <strong>{{$index + 1}}. <span>{{ qs.titleNL }}</span></strong>
+                    </div>
+                    <div class="two columns" align="right">
+                        <a ng-show="errorID !== qs.ID" style="color: white"></a><i ng-show="errorID !== qs.ID" class="fa fa-check-square-o fa-2x"></i><i ng-show="errorID !== qs.ID" class="fa fa-square-o fa-2x"></i>
+                    </div>
+                </div>       
+            </li>
+			<li>
+				<ul class="answerForQuestion" ng-repeat="answer in qs.answers">
+					<li class="answerForQuestion">					
+                        <div class="row" id="">
+                            <div class="ten columns">
+                              - {{answer.titleNL}}
+                            </div>
+                            <div class="two columns">
+                                <input type="radio" name="{{ answer.titleNL || answer.id}}" value="0" question-id="{{ qs.ID }}" ng-checked="errorID === qs.ID || userSelection[qs.ID][answer.id] === 0" ng-click="saveAnswer(qs.ID, answer.id, 0)">0
+                                <input type="radio" name="{{ answer.titleNL || answer.id}}" value="1" question-id="{{ qs.ID }}" ng-checked="errorID === qs.ID ? false : userSelection[qs.ID][answer.id] === 1" ng-click="saveAnswer(qs.ID, answer.id, 1)">1
+                                <input type="radio" name="{{ answer.titleNL || answer.id}}" value="2" question-id="{{ qs.ID }}" ng-checked="errorID === qs.ID ? false : userSelection[qs.ID][answer.id] === 2" ng-click="saveAnswer(qs.ID, answer.id, 2)">2
+                                <input type="radio" name="{{ answer.titleNL || answer.id}}" value="3" question-id="{{ qs.ID }}" ng-checked="errorID === qs.ID ? false : userSelection[qs.ID][answer.id] === 3" ng-click="saveAnswer(qs.ID, answer.id, 3)">3
+                            </div>
+                        </div>						
+					</li>			
+				</ul>
+			</li>
+			<div ng-show="errorID === qs.ID">
+				<p style="color: red">Geef maximaal 3 punten per vraag.</p>
+			</div>
+		</ul>		
+	</div>
+</div>

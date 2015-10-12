@@ -1,0 +1,21 @@
+table.table th[rowspan] {
+	vertical-align: middle;
+	text-align: center;
+}
+table.table th[colspan] {
+	vertical-align: middle;
+	text-align: center;
+}
+nvd3[data="barChartData"] svg {
+	margin-left: 10%;
+	overflow: visible;
+}
+.detail-row {
+	cursor: pointer;
+}
+.detail-row:hover {
+	background-color: #F2F1EF;
+}
+.answers-choice {
+	margin: 0 auto;
+}
