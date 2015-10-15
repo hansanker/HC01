@@ -40,7 +40,9 @@
                         <strong>{{$index + 1}}. <span>{{ qs.titleNL }}</span></strong>
                     </div>
                     <div class="two columns" align="right">
-                        <a ng-show="errorID !== qs.ID" style="color: white"></a><i ng-show="errorID !== qs.ID" class="fa fa-check-square-o fa-2x"></i><i ng-show="errorID !== qs.ID" class="fa fa-square-o fa-2x"></i>
+                        <a ng-show="errorID !== qs.ID" style="color: white"></a>
+						<i ng-show="userSelection[qs.ID].$totalPoints === 3" class="fa fa-check-square-o fa-2x"></i>
+						<i ng-show="userSelection[qs.ID].$totalPoints !== 3" class="fa fa-square-o fa-2x"></i>
                     </div>
                 </div>       
             </li>

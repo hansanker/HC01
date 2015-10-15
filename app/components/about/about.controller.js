@@ -71,7 +71,13 @@
 						$selectionArray.$loaded().then(function(result) {
 							$scope.loadingUserInfo = false;
 							angular.forEach(result, function(selection) {
-								$scope.userSelection[selection.$id] = selection;		
+								$scope.userSelection[selection.$id] = selection;
+								$scope.userSelection.$totalPoints = 0;
+								for (var key in selection) {
+									if (key.indexOf("$") === -1) {
+										$scope.userSelection.$totalPoints += selection[key];
+									}
+								}
 							});
 							$scope.showAnswers = true;
 						});
@@ -111,6 +117,11 @@
 					}
 				}
 				if (totalPoints > 3) {
+					// Update UI for the wrong check exceed 3 points
+					var $wrongCheck = $(event.currentTarget);
+					$wrongCheck.prop("checked", false);
+					$wrongCheck.parent().find("input[type=radio][value=0]").prop("checked", true)
+					
 					$scope.errorID = questionID;
 					for (var key in choices) {
 						if (key.indexOf("$") === -1) {
@@ -118,9 +129,18 @@
 						}
 					}
 					$scope.userSelection[questionID] = choices;
+					// update total points value to show/hide the check icon 
+					$scope.userSelection[questionID].$totalPoints = 0;
 					$selectionArray.$save(choices);
 				} else {
 					choices[answerID] = point;
+					// update total points value to show/hide the check icon 
+					$scope.userSelection[questionID].$totalPoints = 0;
+					for (var key in choices) {
+						if (key.indexOf("$") === -1) {
+							$scope.userSelection[questionID].$totalPoints += choices[key];
+						}
+					}
 					$selectionArray.$save(choices);
 				}
 			}
