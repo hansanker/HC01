@@ -70,7 +70,7 @@
 						var reportInfoRow = angular.copy(reportInfoTemplate);
 						reportInfoRow.question = index + 1;
 						reportInfoRow.questionID = question.ID; // TODO: make the ID field consistent
-						reportInfoRow.questionTitle = question.titleEN;
+						reportInfoRow.questionTitle = question.titleNL;
 						reportInfoRow.questionSubject = question.subject;
 						reportInfoRow.questionTheme = question.theme;
 						// Iterate over answers
@@ -78,7 +78,7 @@
 							var reportInfoRowWithAnswer = angular.copy(reportInfoRow);
 							reportInfoRowWithAnswer.answer = index + 1;
 							reportInfoRowWithAnswer.answerID = answer.id; // TODO: make the ID field consistent
-							reportInfoRowWithAnswer.answerTitle = answer.titleEN;
+							reportInfoRowWithAnswer.answerTitle = answer.titleNL;
 							reportInfoRowWithAnswer.answerCulture = answer.culture;
 							// Put the row into array
 							reportInfoList.push(reportInfoRowWithAnswer);
