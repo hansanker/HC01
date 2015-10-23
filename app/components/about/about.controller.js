@@ -1,7 +1,7 @@
 (function () {
     'use strict';
     var controllerId = 'aboutController';
-    angular.module('angularstrapControllers', []).controller(controllerId, ["$scope", "$firebaseArray", "$firebaseObject",
+    angular.module('angularstrapControllers', []).controller(controllerId, ["$scope" , "$location", "$q", "$firebaseArray", "$firebaseObject",
 
         /**
          * Primary entry point for application
@@ -12,7 +12,7 @@
          * @param {string} [APIHOST] constant for pointing to REST server
          *
          **/
-          function aboutController($scope, $firebaseArray, $firebaseObject) {
+          function aboutController($scope, $location, $q, $firebaseArray, $firebaseObject) {
             var vm = this;
 
             function reloadPage() {
@@ -65,7 +65,8 @@
 				$scope.loadingUserInfo = true;
 				reactionInstance.orderByChild("companyContactPersonEmail").equalTo($scope.userEmail).once('value', function(data) {					
 				    $scope.userSelection = {};		
-					if (data.exists()) {
+
+				    if (data.exists()) {
 						var answerRef = reactionInstance.child(Object.keys(data.val())[0] + "/answers");
 						$selectionArray = $firebaseArray(answerRef);		
 						$selectionArray.$loaded().then(function(result) {
@@ -106,7 +107,8 @@
 				});
 			};
 			
-			$scope.saveAnswer = function(questionID, answerID, point) {
+			$scope.saveAnswer = function (questionID, answerID, point) {
+			    console.log(questionID)
 				$scope.errorID = null;
 				var choices = $selectionArray.$getRecord(questionID);
                 console.log(choices)
@@ -116,6 +118,7 @@
 						totalPoints += choices[key];
 					}
 				}
+
 				if (totalPoints > 3) {
 					// Update UI for the wrong check exceed 3 points
 					var $wrongCheck = $(event.currentTarget);
@@ -134,7 +137,10 @@
 					$selectionArray.$save(choices);
 				} else {
 					choices[answerID] = point;
-					// update total points value to show/hide the check icon 
+				    // update total points value to show/hide the check icon 
+
+					$scope.userSelection[questionID] = choices;
+
 					$scope.userSelection[questionID].$totalPoints = 0;
 					for (var key in choices) {
 						if (key.indexOf("$") === -1) {
@@ -147,6 +153,15 @@
 				
 			$scope.processSurvey = function() {
 				$scope.showQuestions = true;
+			}
+
+			$scope.finishSurvey = function () {
+			    $scope.showQuestions = false;
+			    $scope.showReady = true;
+			    $scope.userEmail = "";
+			    $scope.doSurvey = false;
+
+			   
 			}
 			
             return vm;

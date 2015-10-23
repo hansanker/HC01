@@ -19,3 +19,16 @@ nvd3[data="barChartData"] svg {
 .answers-choice {
 	margin: 0 auto;
 }
+
+#questionTitle{
+    background-color: #DDDEFF;
+    padding: 4px;
+    border-radius: 4px
+
+}
+
+.answerForQuestion{
+    padding: 0px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}

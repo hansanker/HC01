@@ -1,71 +1,104 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">TPP vragenlijst</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">{{Company}}</a></li>
+                
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+               
+                <li><a href=""><img src="app/components/about/HC.bmp"></a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<br><br><br><br><br>
+
+
 
 <div class="container" align="left">
+    <div class="row clearfix">
+        <div ng-show="!showQuestions" class="jumbotron row">
+            <div class="col-md-offset-3 col-md-6">
+                <form class="text-center" role="search">
+                    <div class="form-group">
+                        <input ng-enter="checkUserEmail()" ng-model="userEmail" type="text" class="form-control" style="width: 350px;" placeholder="Type uw emailadres en geef ENTER" />
+                    </div>
+                    <div class="form-group">
+                        <button ng-if="loadingUserInfo" class="btn btn-lg btn-warning"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Laden...</button>
+                    </div>
+                    <div ng-show="false" class="form-group">
+                        <input ng-model="userName" type="text" class="form-control" placeholder="Place name & press Enter" />
+                    </div>
+                    <div ng-show="false" class="form-group">
+                        <input ng-model="userCompany" type="text" class="form-control" placeholder="Place company & press Enter" />
+                    </div>
+                    <div ng-show="doSurvey" class="form-group">
+                        <button ng-click="processSurvey()" class="btn btn-default">{{userStatus}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
-            <h2>TPP vragenlijst</h2>
-            <table>
-                <tr><td >Klantnaam  :</td><td>{{Company}}</td></tr>
-                <tr><td>Email contactpersoon :</td><td>{{emails}}</td></tr>
-                <tr><td>Vragenlijst open tot :</td><td>{{closeDate}}</td></tr>
-             </table>
-	
-</div>
-<div class="row clearfix">
-	<div ng-show="!showQuestions" class="jumbotron row">
-		<div class="col-md-offset-3 col-md-6">
-			<form class="text-center" role="search">
-				<div class="form-group">
-					<input ng-enter="checkUserEmail()" ng-model="userEmail" type="text" class="form-control" style="width: 350px;" placeholder="Type uw emailadres en geef ENTER"/>
-				</div>
-				<div class="form-group">
-					<button ng-if="loadingUserInfo" class="btn btn-lg btn-warning"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Laden...</button>
-				</div>						
-				<div ng-show="false" class="form-group">
-					<input ng-model="userName" type="text" class="form-control" placeholder="Place name & press Enter"/>
-				</div> 
-				<div ng-show="false" class="form-group">
-					<input ng-model="userCompany" type="text" class="form-control" placeholder="Place company & press Enter"/>
-				</div> 
-				<div ng-show="doSurvey" class="form-group">
-					<button ng-click="processSurvey()" class="btn btn-default">{{userStatus}}</button>
-				</div>
-			</form>
-		</div>
-	</div>
-	
-	<div ng-show="showQuestions">		
-		<ul ng-repeat="qs in questions">
-			<li>
-                <div class="row" id="questionTitle">
-                    <div class="ten columns">
-                        <strong>{{$index + 1}}. <span>{{ qs.titleNL }}</span></strong>
+        <div ng-show="showQuestions">
+            <div>
+                Deze vragenlijst helpt om over uw team een analyse te maken waar zij in de balans tussen Vertrouwen en Prestatie staan. Beantwoord de vragen zoals u denkt dat uw medewerkers deze zouden beantwoorden.
+                <br><br>Er zijn 31 onderwerpen met steeds 4 stellingen. Verdeel in totaal 3 punten over de 4 stellingen waar u zich het meest in kan vinden.
+                U kunt tussentijds stoppen. Door de link opnieuw te openen met het eerder opgegeven mailadres worden  de reeds gegeven antwoorden geladen.
+            </div>
+            <br>
+            <ul ng-repeat="qs in questions">
+                <li>
+                    <div class="row" id="questionTitle">
+                        <div class="col-md-8">
+                            <strong>{{$index + 1}}. <span>{{ qs.titleNL }}</span></strong>
+                        </div>
+                        <div class="col-md-2" align="right">
+                            <a ng-show="errorID !== qs.ID" style="color: white"></a>
+                            <i ng-show="userSelection[qs.ID].$totalPoints === 3" class="fa fa-check-square-o fa-2x"></i>
+                            <i ng-show="userSelection[qs.ID].$totalPoints !== 3" class="fa fa-square-o fa-2x"></i>
+                        </div>
                     </div>
-                    <div class="two columns" align="right">
-                        <a ng-show="errorID !== qs.ID" style="color: white"></a>
-						<i ng-show="userSelection[qs.ID].$totalPoints === 3" class="fa fa-check-square-o fa-2x"></i>
-						<i ng-show="userSelection[qs.ID].$totalPoints !== 3" class="fa fa-square-o fa-2x"></i>
-                    </div>
-                </div>       
-            </li>
-			<li>
-				<ul class="answerForQuestion" ng-repeat="answer in qs.answers">
-					<li class="answerForQuestion">					
-                        <div class="row" id="">
-                            <div class="ten columns">
-                              - {{answer.titleNL}}
+                </li>
+                <li>
+                    <ul class="answerForQuestion" ng-repeat="answer in qs.answers">
+                        <li class="answerForQuestion">
+                            <div class="row" id="">
+                                <div class="col-md-8">
+                                    - {{answer.titleNL}}
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="radio" name="{{ answer.titleNL || answer.id}}" value="0" question-id="{{ qs.ID }}" ng-checked="errorID === qs.ID || userSelection[qs.ID][answer.id] === 0" ng-click="saveAnswer(qs.ID, answer.id, 0)">0
+                                    <input type="radio" name="{{ answer.titleNL || answer.id}}" value="1" question-id="{{ qs.ID }}" ng-checked="errorID === qs.ID ? false : userSelection[qs.ID][answer.id] === 1" ng-click="saveAnswer(qs.ID, answer.id, 1)">1
+                                    <input type="radio" name="{{ answer.titleNL || answer.id}}" value="2" question-id="{{ qs.ID }}" ng-checked="errorID === qs.ID ? false : userSelection[qs.ID][answer.id] === 2" ng-click="saveAnswer(qs.ID, answer.id, 2)">2
+                                    <input type="radio" name="{{ answer.titleNL || answer.id}}" value="3" question-id="{{ qs.ID }}" ng-checked="errorID === qs.ID ? false : userSelection[qs.ID][answer.id] === 3" ng-click="saveAnswer(qs.ID, answer.id, 3)">3
+                                </div>
                             </div>
-                            <div class="two columns">
-                                <input type="radio" name="{{ answer.titleNL || answer.id}}" value="0" question-id="{{ qs.ID }}" ng-checked="errorID === qs.ID || userSelection[qs.ID][answer.id] === 0" ng-click="saveAnswer(qs.ID, answer.id, 0)">0
-                                <input type="radio" name="{{ answer.titleNL || answer.id}}" value="1" question-id="{{ qs.ID }}" ng-checked="errorID === qs.ID ? false : userSelection[qs.ID][answer.id] === 1" ng-click="saveAnswer(qs.ID, answer.id, 1)">1
-                                <input type="radio" name="{{ answer.titleNL || answer.id}}" value="2" question-id="{{ qs.ID }}" ng-checked="errorID === qs.ID ? false : userSelection[qs.ID][answer.id] === 2" ng-click="saveAnswer(qs.ID, answer.id, 2)">2
-                                <input type="radio" name="{{ answer.titleNL || answer.id}}" value="3" question-id="{{ qs.ID }}" ng-checked="errorID === qs.ID ? false : userSelection[qs.ID][answer.id] === 3" ng-click="saveAnswer(qs.ID, answer.id, 3)">3
-                            </div>
-                        </div>						
-					</li>			
-				</ul>
-			</li>
-			<div ng-show="errorID === qs.ID">
-				<p style="color: red">Geef maximaal 3 punten per vraag.</p>
-			</div>
-		</ul>		
-	</div>
+                        </li>
+                    </ul>
+                </li>
+                <div ng-show="errorID === qs.ID">
+                    <p style="color: red">Geef maximaal 3 punten per vraag.</p>
+                </div>
+            </ul>
+
+        </div> 
+        
+        
+        <div align="center"><button align="center" ng-show="showQuestions" ng-click="finishSurvey()" class="btn btn-default">Vragenlijst afronden</button> </div>
+           <div ng-show="showReady" padding="10">De antwoorden zijn opgeslagen. Bedankt voor het invullen van de vragenlijst.</div>
+    
+    </div>
+        
+    
 </div>
